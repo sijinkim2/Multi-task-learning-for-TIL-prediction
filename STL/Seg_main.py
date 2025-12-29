@@ -15,7 +15,6 @@ from DeepLabv3_plus import DeepLabv3Plus
 from sklearn.model_selection import KFold
 from torch.utils.data import Subset, DataLoader
 
-
 tb_loggers = pl_loggers.TensorBoardLogger("logs/")
 
 def one_hot_label(
@@ -45,9 +44,7 @@ class SemSegment(LightningModule):
             after_training: bool = True,
             **kwargs
     ):
-
         super().__init__()
-
         self.num_classes = num_classes
         self.num_layers = num_layers
         self.features_start = features_start
@@ -55,8 +52,6 @@ class SemSegment(LightningModule):
         self.lr = lr
         self.after_training = True
         self.net = DeepLabv3Plus()
-
-        print('fdfasd')
 
     def forward(self, x):
         return self.net(x)
@@ -67,7 +62,6 @@ class SemSegment(LightningModule):
         mask = mask.long()
         label = one_hot_label(mask)
         out = self(img)
-
         dice0, dice1, dice2, diceT, bce_loss, dice_loss, loss_val = Class_wise_Dice_score(out, label)
 
         # loss_val = F.cross_entropy(out, mask, ignore_index=250)
@@ -91,7 +85,6 @@ class SemSegment(LightningModule):
         label = one_hot_label(mask)
         out = self(img)
         pred = F.softmax(out)
-
         dice0, dice1, dice2, diceT, bce_loss, dice_loss, loss_val = Class_wise_Dice_score(out, label)
 
         # loss_val = F.cross_entropy(out, mask, ignore_index=250)
@@ -164,7 +157,6 @@ def cli_main():
     args.__dict__["max_epochs"] = 300
     args.__dict__["num_workers"] = 20
     args.__dict__["callbacks"] = [ModelCheckpoint(save_top_k=1, save_last=False, monitor="val_loss"),
-                                  # Save the best checkpoint based on the maximum val_acc recorded. Saves only weights and not optimizer
                                   LearningRateMonitor()]  # , EarlyStopping(monitor="val_loss", mode="min", patience=5 )]
 
 
