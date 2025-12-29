@@ -33,7 +33,7 @@ The dataset is organized as follows:
 - **TILS**  
   Used for TIL prediction, consisting of whole-slide images (WSIs) and associated TIL score lists provided in XML format.
 
-Please ensure that you have appropriate access rights to the dataset before running the code. The dataset can be accessed from [Dataset](https://registry.opendata.aws/tiger/)
+Please ensure that you have appropriate access rights to the dataset before running the code. The dataset can be accessed from [Dataset](https://registry.opendata.aws/tiger/).
 
 ---
 
