@@ -29,7 +29,6 @@ def one_hot_label(
     one_hot = torch.zeros((shape[0], ignore_index + 1) + shape[1:], device=device, dtype=dtype)
     one_hot = one_hot.scatter_(1, labels.unsqueeze(1), 1.0) + eps
     ret = torch.split(one_hot, [num_classes, ignore_index + 1 - num_classes], dim=1)[0]
-
     return ret
 
 
@@ -44,24 +43,7 @@ class SemSegment(LightningModule):
             after_training: bool = True,
             **kwargs
     ):
-        """Basic model for semantic segmentation. Uses UNet architecture by default.
-
-        The default parameters in this model are for the KITTI dataset. Note, if you'd like to use this model as is,
-        you will first need to download the KITTI dataset yourself. You can download the dataset `here.
-        <http://www.cvlibs.net/datasets/kitti/eval_semseg.php?benchmark=semantics2015>`_
-
-        Implemented by:
-
-            - `Annika Brundyn <https://github.com/annikabrundyn>`_
-
-        Args:
-            num_layers: number of layers in each side of U-net (default 5)
-            features_start: number of features in first layer (default 64)
-            bilinear: whether to use bilinear interpolation (True) or transposed convolutions (default) for upsampling.
-            lr: learning (default 0.01)
-        """
         super().__init__()
-
         self.num_classes = num_classes
         self.num_layers = num_layers
         self.features_start = features_start
@@ -80,9 +62,7 @@ class SemSegment(LightningModule):
 
         label = one_hot_label(mask)
         out = self(img)
-
         dice0, dice1, dice_total, bce_loss, dice_loss, loss_val, froc_score = Class_Wise_TIL_Detection_FROC(out, label)
-
 
         self.log('train_loss', loss_val, on_step=False, on_epoch=True)
         self.log('train_dice_background', dice0, on_step=False, on_epoch=True)
@@ -90,20 +70,15 @@ class SemSegment(LightningModule):
         self.log('train_bce_loss', bce_loss, on_step=False, on_epoch=True)
         #self.log('train_dice_loss', dice_loss, on_step=False, on_epoch=True)
         self.log('train_froc', froc_score, on_step=False, on_epoch=True)
-
-
         return loss_val
 
     def validation_step(self, batch, batch_idx):
-
         img, mask = batch
         img = img.float()
         mask = mask.long()
         label = one_hot_label(mask)
         out = self(img)
         pred = F.softmax(out)
-
-
         dice0, dice1, dice_total, bce_loss, dice_loss, loss_val, froc_score = Class_Wise_TIL_Detection_FROC(out, label)
 
         self.log('val_loss', loss_val, on_step=False, on_epoch=True, sync_dist=True)
@@ -113,13 +88,10 @@ class SemSegment(LightningModule):
         #self.log('val_dice_loss', dice_loss, on_step=False, on_epoch=True, sync_dist=True)
         self.log('val_froc', froc_score, on_step=False, on_epoch=True, sync_dist=True)
 
-
-
         if (batch_idx == 0) and self.after_training:
             self.logger.experiment.add_image("val_input", make_grid(img, nrow=5))
             self.logger.experiment.add_image("val_label", make_grid(label[:, :3], nrow=5))
             self.logger.experiment.add_image("val_pred", make_grid(pred[:, :3], nrow=5))
-
         return loss_val
 
     def training_epoch_end(self, outputs):
@@ -139,7 +111,6 @@ class SemSegment(LightningModule):
         parser.add_argument(
             "--bilinear", action="store_true", default=False, help="whether to use bilinear interpolation or transposed"
         )
-
         return parser
 
 
@@ -148,7 +119,6 @@ def count_parameters(model):
 
 
 def cli_main():
-    #from pl_bolts.datamodules import KittiDataModule
     from pl_bolts.datamodules.multi_task_datamodule import KittiDataModule
 
     seed_everything(1234)
@@ -170,9 +140,7 @@ def cli_main():
     args.__dict__["max_epochs"] = 300
     args.__dict__["num_workers"] = 20
     args.__dict__["callbacks"] = [ModelCheckpoint(save_top_k=1, save_last=False, monitor="val_loss"),
-                                  # Save the best checkpoint based on the maximum val_acc recorded. Saves only weights and not optimizer
                                   LearningRateMonitor()]  # , EarlyStopping(monitor="val_loss", mode="min", patience=5 )]
-
 
     # data
     dm = KittiDataModule(args.data_dir).from_argparse_args(args)
@@ -185,7 +153,6 @@ def cli_main():
     trainer.fit(model, dm)
     model.eval()
     trainer.test(model, datamodule=dm)
-
 
 if __name__ == "__main__":
     cli_main()
