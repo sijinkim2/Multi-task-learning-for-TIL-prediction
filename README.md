@@ -39,24 +39,26 @@ Please ensure that you have appropriate access rights to the dataset before runn
 
 ##Repository Structure
 
-MTL/
+```text
+MTL/                     # Multi-task learning (Unified MTL)
  ├─ Dataset.py
  ├─ Datamodule.py
  ├─ DeepLabv3_plus.py
  ├─ ASPP.py
  ├─ Loss_function.py
- └─ main.py
-STL/
+ └─ main.py              # Entry point for MTL training/eval
+
+STL/                     # Single-task learning baselines
  ├─ Dataset.py
  ├─ Datamodule.py
  ├─ DeepLabv3_plus.py
  ├─ ASPP.py
  ├─ Loss_function.py
- ├─ Seg_main.py
- └─ det_main.py
-The `MTL` directory contains the multi-task learning pipeline, while the `STL` directory provides
-independent training scripts for segmentation and detection. The `TIL_prediction` directory
-includes scripts for downstream TIL score prediction and evaluation.
+ ├─ Seg_main.py          # Segmentation-only entry point
+ └─ det_main.py          # Detection-only entry point
+
+The `MTL` directory contains the multi-task learning pipeline, while the `STL` directory provides independent training scripts for segmentation and detection.
+The `TIL_prediction` directory includes scripts for downstream TIL score prediction and evaluation.
 
 ---
 
