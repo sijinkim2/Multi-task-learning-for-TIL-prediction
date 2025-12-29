@@ -56,6 +56,7 @@ STL/                     # Single-task learning baselines
  ├─ Loss_function.py
  ├─ Seg_main.py          # Segmentation-only entry point
  └─ det_main.py          # Detection-only entry point
+```
 
 The `MTL` directory contains the multi-task learning pipeline, while the `STL` directory provides independent training scripts for segmentation and detection.
 The `TIL_prediction` directory includes scripts for downstream TIL score prediction and evaluation.
