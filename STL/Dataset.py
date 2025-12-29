@@ -11,32 +11,14 @@ if _PIL_AVAILABLE:
 else:  # pragma: no cover
     warn_missing_pkg("PIL", pypi_name="Pillow")
 
-#kitti
-#DEFAULT_VOID_LABELS = (0, 1, 2, 3, 4, 5, 6, 9, 10, 14, 15, 16, 18, 29, 30, -1)
-#DEFAULT_VALID_LABELS = (7, 8, 11, 12, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33)
-
 #tiger dataset
-#DEFAULT_VALID_LABELS = (0, 1 ,2)
+#DEFAULT_VALID_LABELS = (0, 1, 2)
 DEFAULT_VALID_LABELS = (0, 1)
 
 class train_Dataset(Dataset):
-    """
-    Note:
-        You need to have downloaded the Kitti dataset first and provide the path to where it is saved.
-        You can download the dataset here: http://www.cvlibs.net/datasets/kitti/eval_semseg.php?benchmark=semantics2015
-
-    There are 34 classes, however not all of them are useful for training (e.g. railings on highways). These
-    useless classes (the pixel values of these classes) are stored in `void_labels`. Useful classes are stored
-    in `valid_labels`.
-
-    The `encode_segmap` function sets all pixels with any of the `void_labels` to `ignore_index`
-    (250 by default). It also sets all of the valid pixels to the appropriate value between 0 and
-    `len(valid_labels)` (since that is the number of valid classes), so it can be used properly by
-    the loss function when comparing with the output.
-    """
-
-    IMAGE_PATH = os.path.join("/home/skim/dataset/detection/fold5/train_img")
-    MASK_PATH = os.path.join("/home/skim/dataset/detection/fold5/train_mask")
+    
+    IMAGE_PATH = os.path.join("/path/to/detection/dataset/train/img")
+    MASK_PATH = os.path.join("/path/to/detection/dataset/train/mask")
     def __init__(
         self,
         data_dir: str,
@@ -47,7 +29,7 @@ class train_Dataset(Dataset):
     ):
         """
         Args:
-            data_dir (str): where to load the data from path, i.e. '/path/to/folder/with/data_semantics/'
+            data_dir (str): where to load the data from.
             img_size: image dimensions (width, height)
             void_labels: useless classes to be excluded from training
             valid_labels: useful classes to include
@@ -84,14 +66,12 @@ class train_Dataset(Dataset):
 
         if self.transform:
             img = self.transform(img)
-
-
-
+        
         return img, mask
 
 
     def get_filenames(self, path):
-        """Returns a list of absolute paths to images inside given `path`"""
+        """ Returns a list of absolute paths to images inside a given path."""
         files_list = list()
         for filename in os.listdir(path):
             files_list.append(os.path.join(path, filename))
@@ -99,7 +79,7 @@ class train_Dataset(Dataset):
 
 
     def encode_segmap(self, mask):
-        """Sets void classes to zero so they won't be considered for training."""
+        """ Sets void classes to zero so they won't be considered for training."""
         #for voidc in self.void_labels:
         #    mask[mask == voidc] = self.ignore_index
         for validc in self.valid_labels:
@@ -111,25 +91,9 @@ class train_Dataset(Dataset):
 
 
 class val_Dataset(Dataset):
-    """
-    Note:
-        You need to have downloaded the Kitti dataset first and provide the path to where it is saved.
-        You can download the dataset here: http://www.cvlibs.net/datasets/kitti/eval_semseg.php?benchmark=semantics2015
 
-    There are 34 classes, however not all of them are useful for training (e.g. railings on highways). These
-    useless classes (the pixel values of these classes) are stored in `void_labels`. Useful classes are stored
-    in `valid_labels`.
-
-    The `encode_segmap` function sets all pixels with any of the `void_labels` to `ignore_index`
-    (250 by default). It also sets all of the valid pixels to the appropriate value between 0 and
-    `len(valid_labels)` (since that is the number of valid classes), so it can be used properly by
-    the loss function when comparing with the output.
-    """
-
-    IMAGE_PATH = os.path.join(
-        "/home/skim/dataset/detection/fold5/val_img")
-    MASK_PATH = os.path.join(
-        "/home/skim/dataset/detection/fold5/val_mask")
+    IMAGE_PATH = os.path.join("/path/to/detection/dataset/val/img")
+    MASK_PATH = os.path.join("/path/to/detection/dataset/val/mask")
 
     def __init__(
             self,
@@ -141,7 +105,7 @@ class val_Dataset(Dataset):
     ):
         """
         Args:
-            data_dir (str): where to load the data from path, i.e. '/path/to/folder/with/data_semantics/'
+            data_dir (str): where to load the data from.
             img_size: image dimensions (width, height)
             void_labels: useless classes to be excluded from training
             valid_labels: useful classes to include
@@ -181,14 +145,14 @@ class val_Dataset(Dataset):
         return img, mask
 
     def get_filenames(self, path):
-        """Returns a list of absolute paths to images inside given `path`"""
+        """ Returns a list of absolute paths to images inside a given path."""
         files_list = list()
         for filename in os.listdir(path):
             files_list.append(os.path.join(path, filename))
         return files_list
 
     def encode_segmap(self, mask):
-        """Sets void classes to zero so they won't be considered for training."""
+        """ Sets void classes to zero so they won't be considered for training."""
         # for voidc in self.void_labels:
         #    mask[mask == voidc] = self.ignore_index
         for validc in self.valid_labels:
