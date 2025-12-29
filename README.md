@@ -48,7 +48,7 @@ STL/                     # Single-task learning baselines
 ```
 
 The `MTL` directory contains the multi-task learning pipeline, while the `STL` directory provides independent training scripts for segmentation and detection.
-The `TIL_prediction` directory includes scripts for downstream TIL score prediction and evaluation.
+
 
 ## How to Run
 
