@@ -69,7 +69,7 @@ Please refer to the official repository for model details and instructions for o
 ## Released Checkpoint (Best-performing Unified MTL)
 
 This repository provides the checkpoint for the best-performing unified MTL model used in our experiments (as reported in the manuscript).
-Download: **[link-to-checkpoint]**
+Download: [link-to-checkpoint](https://drive.google.com/file/d/1xVjz9W_EdUW9O98OmNER-hWUe49-e_-M/view?usp=sharing)
 
 ## Environment
 
