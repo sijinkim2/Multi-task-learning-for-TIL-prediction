@@ -55,9 +55,10 @@ The `MTL` directory contains the multi-task learning pipeline, while the `STL` d
 To train the **Multi-Task Learning** model, run the main.py file in the MTL directory.
 
 To train the **Single-Task Learning** models separately:
-Tissue segmentation: run the Seg_main.py file in the STL directory.
 
-Lymphocyte detection: run the det_main.py file in the STL directory.
+- Tissue segmentation: run the Seg_main.py file in the STL directory.
+
+- Lymphocyte detection: run the det_main.py file in the STL directory.
 
 Dataset paths and hyperparameters need to be adjusted manually.
 
