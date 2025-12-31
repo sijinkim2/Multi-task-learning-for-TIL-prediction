@@ -135,8 +135,8 @@ def count_parameters(model):
 
 
 def cli_main():
-    #from pl_bolts.datamodules import KittiDataModule
-    from pl_bolts.datamodules.multi_task_datamodule import KittiDataModule
+    
+    from DataModule import DataModule
 
     seed_everything(1234)
     #kfold = KFold(n_splits=5, shuffle=True)
@@ -161,7 +161,7 @@ def cli_main():
 
 
     # data
-    dm = KittiDataModule(args.data_dir).from_argparse_args(args)
+    dm = DataModule(args.data_dir).from_argparse_args(args)
 
     # model
     model = SemSegment(**args.__dict__)
