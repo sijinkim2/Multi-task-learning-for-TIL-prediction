@@ -217,7 +217,7 @@ def cli_main():
 
 
     # data
-    dm = KittiDataModule(args.data_dir).from_argparse_args(args)
+    dm = DataModule(args.data_dir).from_argparse_args(args)
 
     # model
     model = SemSegment(**args.__dict__)
