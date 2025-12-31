@@ -136,10 +136,10 @@ def count_parameters(model):
 
 def cli_main():
     
-    from DataModule import DataModule
+    from Datamodule import DataModule
 
     seed_everything(1234)
-    #kfold = KFold(n_splits=5, shuffle=True)
+    
 
     parser = ArgumentParser()
     # trainer args
@@ -147,7 +147,7 @@ def cli_main():
     # model args
     parser = SemSegment.add_model_specific_args(parser)
     # datamodule args
-    parser = KittiDataModule.add_argparse_args(parser)
+    parser = DataModule.add_argparse_args(parser)
 
     args = parser.parse_args()
     args.__dict__["gpus"] = 1
