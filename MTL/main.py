@@ -202,7 +202,7 @@ def cli_main():
     # model args
     parser = SemSegment.add_model_specific_args(parser)
     # datamodule args
-    parser = KittiDataModule.add_argparse_args(parser)
+    parser = DataModule.add_argparse_args(parser)
 
     args = parser.parse_args()
     args.__dict__["gpus"] = 1
