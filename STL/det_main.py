@@ -119,10 +119,10 @@ def count_parameters(model):
 
 
 def cli_main():
-    from pl_bolts.datamodules.multi_task_datamodule import KittiDataModule
+    from Ddatamodule import DataModule
 
     seed_everything(1234)
-    #kfold = KFold(n_splits=5, shuffle=True)
+    
 
     parser = ArgumentParser()
     # trainer args
@@ -130,7 +130,7 @@ def cli_main():
     # model args
     parser = SemSegment.add_model_specific_args(parser)
     # datamodule args
-    parser = KittiDataModule.add_argparse_args(parser)
+    parser = DataModule.add_argparse_args(parser)
 
     args = parser.parse_args()
     args.__dict__["gpus"] = 1
@@ -143,7 +143,7 @@ def cli_main():
                                   LearningRateMonitor()]  # , EarlyStopping(monitor="val_loss", mode="min", patience=5 )]
 
     # data
-    dm = KittiDataModule(args.data_dir).from_argparse_args(args)
+    dm = DataModule(args.data_dir).from_argparse_args(args)
 
     # model
     model = SemSegment(**args.__dict__)
